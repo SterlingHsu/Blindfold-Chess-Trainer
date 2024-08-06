@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blindfold Chess Trainer</title>
+    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon" />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/static/js/chess.js"></script>
+    <link rel="stylesheet" href="/static/css/chessboard-1.0.0.min.css" />
+    <script src="/static/js/chessboard-1.0.0.min.js"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .piece-417db {
+        transition: opacity 0.3s ease-in-out;
+      }
+      .pieces-hidden .piece-417db {
+        opacity: 0;
+      }
+      #pgn-box {
+        height: 250px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: #fff;
+      }
+      #chess_board {
+        width: 600px;
+        height: 600px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #evaluation-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 10px;
+      }
+      #evaluation-bar-container {
+        height: 595px;
+        width: 25px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+      }
+      #evaluation-bar {
+        width: 100%;
+        background-color: #4caf50;
+        position: absolute;
+        bottom: 0;
+        transition: height 0.3s;
+      }
+      .evaluation-tick {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: #adb5bd;
+      }
+      #score {
+        margin-top: 5px;
+        font-size: 14px;
+        color: #333;
+        font-weight: bold;
+      }
+      .chess-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+      }
+      .controls-container {
+        width: 400px;
+      }
+      .btn-group {
+        margin-bottom: 20px;
+      }
+      .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+      }
+      .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+      }
+      #difficulty {
+        width: 100%;
+      }
+      #loading {
+        margin-top: 10px;
+        font-style: italic;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="chess-container">
+        <div class="d-flex">
+          <div id="chess_board"></div>
+          <div id="evaluation-container">
+            <div id="evaluation-bar-container">
+              <div id="evaluation-bar"></div>
+            </div>
+            <div id="score"></div>
+          </div>
+        </div>
+        <div class="controls-container">
+          <h5>PGN:</h5>
+          <div id="pgn-box"><div id="pgn"></div></div>
+          <div class="btn-group d-flex">
+            <button id="new_game" class="btn btn-outline-secondary">
+              New Game
+            </button>
+            <button id="take_back" class="btn btn-outline-secondary">
+              Take Back
+            </button>
+            <button id="flip_board" class="btn btn-outline-secondary">
+              Flip Board
+            </button>
+            <button id="hide_pieces" class="btn btn-outline-secondary">
+              Hide Pieces
+            </button>
+            <button id="choose_color" class="btn btn-outline-secondary">
+              Choose Color
+            </button>
+            <button
+              id="show_pieces"
+              class="btn btn-outline-secondary"
+              style="display: none"
+            >
+              Show Pieces
+            </button>
+          </div>
+          <div class="form-group">
+            <label for="difficulty"
+              >Difficulty: <span id="difficulty-value">1</span
+              ><span style="font-style: italic"> (~800 - 3000 ELO)</span></label
+            >
+            <input
+              type="range"
+              class="form-control-range"
+              id="difficulty"
+              min="1"
+              max="20"
+              value="1"
+            />
+            <label for="user-move">Enter your move:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="user-move"
+              placeholder="e.g., e4, O-O, Bxg4"
+            />
+          </div>
+          <div id="loading" style="display: none">Thinking...</div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/js/auditoryMoves.js"></script>
+    <script src="/static/js/boardLogic.js"></script>
+    <script>
+      // Add ticks to the evaluation bar
+      const evaluationBarContainer = document.getElementById(
+        "evaluation-bar-container"
+      );
+      for (let i = 1; i < 10; i++) {
+        const tick = document.createElement("div");
+        tick.className = "evaluation-tick";
+        tick.style.bottom = `${i * 10}%`;
+        evaluationBarContainer.appendChild(tick);
+      }
+    </script>
+  </body>
+</html>
