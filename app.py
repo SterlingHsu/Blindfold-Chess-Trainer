@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request
-from stockfish import Stockfish
-import time
-
-stockfish = Stockfish(path="./engine/stockfish")
+from flask import Flask, render_template, request, jsonify
+import requests
+import os
 
 app = Flask(__name__)
+
+STOCKFISH_API_URL = os.environ.get('STOCKFISH_API_URL', 'http://localhost:5000/make-move')
 
 @app.route('/')
 def root():
@@ -15,24 +15,16 @@ def make_move():
     fen = request.form.get('fen')
     difficulty = int(request.form.get('difficulty'))
 
-    stockfish.update_engine_parameters({"Skill Level": difficulty})
-
-    stockfish.set_fen_position(fen)
-
-    best_move = stockfish.get_best_move_time(50)
-    time.sleep(1)
-
-    score = stockfish.get_evaluation()['value']
-
-    stockfish.make_moves_from_current_position([best_move])
-
-    fen = stockfish.get_fen_position()
-
-    return {
+    response = requests.post(STOCKFISH_API_URL, json={
         'fen': fen,
-        'best_move': str(best_move),
-        'score': str(score),
-    }
+        'difficulty': difficulty
+    })
+
+    if response.status_code == 200:
+        data = response.json()
+        return jsonify(data)
+    else:
+        return jsonify({'error': 'Failed to get move from Stockfish API'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)

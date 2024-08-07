@@ -12,6 +12,10 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
 
     <script src="/static/js/chess.js"></script>
     <link rel="stylesheet" href="/static/css/chessboard-1.0.0.min.css" />
@@ -96,10 +100,15 @@
       }
       .btn-group {
         margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
       }
       .btn-outline-secondary {
         border-color: #6c757d;
         color: #6c757d;
+        padding: 8px 12px;
+        font-size: 14px;
       }
       .btn-outline-secondary:hover {
         background-color: #6c757d;
@@ -112,6 +121,15 @@
         margin-top: 10px;
         font-style: italic;
         color: #6c757d;
+      }
+      .btn-icon {
+        width: 40px;
+        height: 40px;
+        padding: 6px;
+      }
+      .btn-text {
+        width: auto;
+        height: 40px;
       }
     </style>
   </head>
@@ -130,28 +148,48 @@
         <div class="controls-container">
           <h5>PGN:</h5>
           <div id="pgn-box"><div id="pgn"></div></div>
-          <div class="btn-group d-flex">
-            <button id="new_game" class="btn btn-outline-secondary">
-              New Game
+          <div class="btn-group">
+            <button
+              id="new_game"
+              class="btn btn-outline-secondary btn-icon"
+              title="New Game"
+            >
+              <i class="fas fa-plus"></i>
             </button>
-            <button id="take_back" class="btn btn-outline-secondary">
-              Take Back
+            <button
+              id="take_back"
+              class="btn btn-outline-secondary btn-icon"
+              title="Take Back"
+            >
+              <i class="fas fa-undo"></i>
             </button>
-            <button id="flip_board" class="btn btn-outline-secondary">
-              Flip Board
+            <button
+              id="flip_board"
+              class="btn btn-outline-secondary btn-icon"
+              title="Flip Board"
+            >
+              <i class="fas fa-sync-alt"></i>
             </button>
-            <button id="hide_pieces" class="btn btn-outline-secondary">
-              Hide Pieces
-            </button>
-            <button id="choose_color" class="btn btn-outline-secondary">
-              Choose Color
+            <button
+              id="hide_pieces"
+              class="btn btn-outline-secondary btn-icon"
+              title="Hide Pieces"
+            >
+              <i class="fas fa-eye-slash"></i>
             </button>
             <button
               id="show_pieces"
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-secondary btn-icon"
               style="display: none"
+              title="Show Pieces"
             >
-              Show Pieces
+              <i class="fas fa-eye"></i>
+            </button>
+            <button
+              id="choose_color"
+              class="btn btn-outline-secondary btn-text"
+            >
+              Choose Color
             </button>
           </div>
           <div class="form-group">

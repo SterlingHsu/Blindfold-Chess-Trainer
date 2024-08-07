@@ -3,6 +3,7 @@ function make_move() {
 
   const difficulty = $("#difficulty").val();
   $("#loading").show();
+  console.log("Posting");
   $.post(
     "/make_move",
     { fen: game.fen(), difficulty: difficulty },
@@ -99,7 +100,7 @@ $("#choose_color").on("click", function () {
 
 function updateColorButton() {
   $("#choose_color").text(
-    userColor === "w" ? "Playing as White" : "Playing as Black"
+    userColor === "w" ? "Play as White" : "Play as Black"
   );
 }
 
