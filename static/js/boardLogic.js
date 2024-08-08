@@ -3,14 +3,11 @@ function make_move() {
 
   const difficulty = $("#difficulty").val();
   $("#loading").show();
-  console.log("Posting");
   $.post(
     "/make_move",
     { fen: game.fen(), difficulty: difficulty },
     function (data) {
       const move = game.move(data.best_move, { sloppy: true });
-
-      console.log(data.best_move);
 
       board.position(game.fen());
 
@@ -100,7 +97,7 @@ $("#choose_color").on("click", function () {
 
 function updateColorButton() {
   $("#choose_color").text(
-    userColor === "w" ? "Play as White" : "Play as Black"
+    userColor === "w" ? "Play as Black" : "Play as White"
   );
 }
 

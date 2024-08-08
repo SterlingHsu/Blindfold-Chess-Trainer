@@ -3,13 +3,21 @@ let synth;
 let selectedVoice;
 
 // Lookup tables to make the machine's speech more natural
-const pieceNames = {
+const letterToPiece = {
   p: "pawn",
   n: "knight",
   b: "bishop",
   r: "rook",
   q: "queen",
   k: "king",
+};
+
+const pieceToLetter = {
+  knight: "N",
+  bishop: "B",
+  rook: "R",
+  queen: "Q",
+  king: "K",
 };
 
 const fileNames = {
@@ -83,14 +91,7 @@ function processVoiceMove(move) {
     move = "O-O-O";
   }
 
-  const pieceMap = {
-    knight: "N",
-    bishop: "B",
-    rook: "R",
-    queen: "Q",
-    king: "K",
-  };
-  for (let [pieceName, pieceSymbol] of Object.entries(pieceMap)) {
+  for (let [pieceName, pieceSymbol] of Object.entries(pieceToLetter)) {
     if (move.startsWith(pieceName)) {
       move = move.replace(pieceName, pieceSymbol);
     }
@@ -127,6 +128,10 @@ function processVoiceMove(move) {
 function convertEngineMoveToNaturalLanguage(move) {
   let text = "";
 
+  console.log(move);
+  console.log("Flags:", move.flags);
+  console.log("Piece:", move.piece);
+
   if (move.flags.includes("k")) {
     return "kingside castle";
   } else if (move.flags.includes("q")) {
@@ -134,7 +139,7 @@ function convertEngineMoveToNaturalLanguage(move) {
   }
 
   if (move.piece !== "p") {
-    text += pieceNames[move.piece] + " ";
+    text += letterToPiece[move.piece] + " ";
   }
 
   if (move.flags.includes("c") && move.piece === "p") {
@@ -148,7 +153,7 @@ function convertEngineMoveToNaturalLanguage(move) {
   if (move.flags.includes("e")) {
     text += " en passant";
   } else if (move.flags.includes("p")) {
-    text += " promoting to " + pieceNames[move.promotion];
+    text += " promoting to " + letterToPiece[move.promotion];
   }
 
   return text;
@@ -157,7 +162,7 @@ function convertEngineMoveToNaturalLanguage(move) {
 function speakMove(move) {
   let text = "";
   if (move.piece !== "p") {
-    text += pieceNames[move.piece] + " ";
+    text += letterToPiece[move.piece] + " ";
   }
   text += fileNames[move.to[0]] + " " + rankNames[move.to[1]];
   speak(text);

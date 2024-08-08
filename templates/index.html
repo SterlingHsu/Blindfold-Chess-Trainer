@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Blindfold Chess Trainer</title>
     <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon" />
 
@@ -34,6 +37,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 16px;
       }
       .piece-417db {
         transition: opacity 0.3s ease-in-out;
@@ -50,10 +54,33 @@
         margin-bottom: 20px;
         background-color: #fff;
       }
+      .chess-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .board-container {
+        width: 100%;
+        max-width: 600px;
+      }
       #chess_board {
-        width: 600px;
-        height: 600px;
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        position: relative;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #chess_board > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
       #evaluation-container {
         display: flex;
@@ -88,12 +115,6 @@
         font-size: 14px;
         color: #333;
         font-weight: bold;
-      }
-      .chess-container {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 30px;
       }
       .controls-container {
         width: 400px;
@@ -131,19 +152,47 @@
         width: auto;
         height: 40px;
       }
+      @media (max-width: 768px) {
+        body {
+          font-size: 14px;
+        }
+        .chess-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        .board-container {
+          width: 95%;
+          max-width: 400px;
+        }
+        .controls-container {
+          width: 100%;
+          max-width: 400px;
+          margin-top: 20px;
+        }
+        .btn-icon,
+        .btn-text {
+          width: 48px;
+          height: 48px;
+          font-size: 18px;
+        }
+        #evaluation-bar-container {
+          height: 300px;
+          width: 15px;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container-fluid">
       <div class="chess-container">
-        <div class="d-flex">
+        <div class="board-container">
           <div id="chess_board"></div>
-          <div id="evaluation-container">
-            <div id="evaluation-bar-container">
-              <div id="evaluation-bar"></div>
-            </div>
-            <div id="score"></div>
+        </div>
+        <div id="evaluation-container">
+          <div id="evaluation-bar-container">
+            <div id="evaluation-bar"></div>
           </div>
+          <div id="score"></div>
         </div>
         <div class="controls-container">
           <h5>PGN:</h5>
