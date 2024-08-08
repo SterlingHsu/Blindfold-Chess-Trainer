@@ -18,6 +18,12 @@ const pieceToLetter = {
   rook: "R",
   queen: "Q",
   king: "K",
+
+  // Handling common WebSpeech misinterpretations
+  night: "N",
+  see: "c",
+  sea: "c",
+  doyou: "d",
 };
 
 const fileNames = {
@@ -55,7 +61,7 @@ function initSpeech() {
   recognition.onresult = function (event) {
     const last = event.results.length - 1;
     const move = event.results[last][0].transcript.trim().toLowerCase();
-    console.log("Recognized: " + move);
+    // console.log("Recognized: " + move);
     processVoiceMove(move);
   };
 
@@ -75,7 +81,7 @@ function initSpeech() {
 
 function processVoiceMove(move) {
   // Convert the move to lowercase and remove extra spaces
-  move = move.toLowerCase().trim().replace(/\s+/g, " ");
+  move = move.toLowerCase().trim().replace(/\s+/g, " ").split(" ").join("");
 
   if (
     move === "castle kingside" ||
@@ -99,7 +105,10 @@ function processVoiceMove(move) {
 
   move = move.replace("check", "");
 
-  move = move.replace("captures", "x").replace("takes", "x");
+  move = move
+    .replace("captures", "x")
+    .replace("capture", "x")
+    .replace("takes", "x");
 
   move = move.replace(" to ", " ");
 
@@ -109,8 +118,6 @@ function processVoiceMove(move) {
 
   // Remove spaces
   move = move.replace(/\s/g, "");
-
-  console.log("Processed move:", move);
 
   let result = game.move(move, { sloppy: true });
 
@@ -127,10 +134,6 @@ function processVoiceMove(move) {
 
 function convertEngineMoveToNaturalLanguage(move) {
   let text = "";
-
-  console.log(move);
-  console.log("Flags:", move.flags);
-  console.log("Piece:", move.piece);
 
   if (move.flags.includes("k")) {
     return "kingside castle";

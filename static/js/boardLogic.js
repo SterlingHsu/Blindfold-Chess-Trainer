@@ -1,3 +1,15 @@
+// GUI board & game state variables
+var board = null;
+var game = new Chess();
+var $status = $("#status");
+var $fen = $("#fen");
+var $pgn = $("#pgn");
+var $score = $("#score");
+var $time = $("#time");
+var $nodes = $("#nodes");
+var $knps = $("#knps");
+var piecesHidden = false;
+
 function make_move() {
   if (game.turn() === userColor) return;
 
@@ -25,6 +37,16 @@ function make_move() {
 }
 
 let scoreStack = [];
+
+const evaluationBarContainer = document.getElementById(
+  "evaluation-bar-container"
+);
+for (let i = 1; i < 10; i++) {
+  const tick = document.createElement("div");
+  tick.className = "evaluation-tick";
+  tick.style.bottom = `${i * 10}%`;
+  evaluationBarContainer.appendChild(tick);
+}
 
 function updateEvaluationBar(score) {
   const $evaluationBar = $("#evaluation-bar");
@@ -150,18 +172,6 @@ $("#user-move").keypress(function (e) {
     }
   }
 });
-
-// GUI board & game state variables
-var board = null;
-var game = new Chess();
-var $status = $("#status");
-var $fen = $("#fen");
-var $pgn = $("#pgn");
-var $score = $("#score");
-var $time = $("#time");
-var $nodes = $("#nodes");
-var $knps = $("#knps");
-var piecesHidden = false;
 
 // on picking up a piece
 function onDragStart(source, piece, position, orientation) {
