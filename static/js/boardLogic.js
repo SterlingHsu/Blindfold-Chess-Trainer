@@ -52,19 +52,27 @@ function updateEvaluationBar(score) {
   const $evaluationBar = $("#evaluation-bar");
   const $score = $("#score");
 
-  let numericScore = parseInt(score) / 100; // Convert centipawns to pawns
+  if (score.includes("M")) {
+    score.includes("-")
+      ? $evaluationBar.css("height", "0%")
+      : $evaluationBar.css("height", "100%");
+    $score.text("M" + parseInt(score).toFixed(0));
+    $evaluationBar.css("background-color", "#FFFFFF");
+  } else {
+    let numericScore = parseInt(score) / 100; // Convert centipawns to pawns
 
-  scoreStack.push(numericScore);
+    scoreStack.push(numericScore);
 
-  let heightPercentage = 50 + (numericScore / 10) * 50;
+    let heightPercentage = 50 + (numericScore / 10) * 50;
 
-  heightPercentage = Math.min(100, Math.max(0, heightPercentage));
+    heightPercentage = Math.min(100, Math.max(0, heightPercentage));
 
-  $evaluationBar.css("height", heightPercentage + "%");
+    $evaluationBar.css("height", heightPercentage + "%");
 
-  $evaluationBar.css("background-color", "#FFFFFF"); // Grey for equal
+    $evaluationBar.css("background-color", "#FFFFFF");
 
-  $score.text((numericScore > 0 ? "+" : "") + numericScore.toFixed(2));
+    $score.text((numericScore > 0 ? "+" : "") + numericScore.toFixed(2));
+  }
 }
 
 function updateEvaluationBarFromStack(score) {
@@ -95,7 +103,6 @@ function resetGame() {
   game.reset();
   board.position("start");
   board.orientation(userColor === "w" ? "white" : "black");
-  console.log(userColor);
   if (userColor === "b") {
     make_move();
   }
@@ -110,7 +117,6 @@ let userColor = "w";
 
 $("#choose_color").on("click", function () {
   // If user color is white, make it black, vice versa
-  console.log(userColor);
   userColor = userColor === "w" ? "b" : "w";
   updateColorButton();
 
@@ -277,10 +283,8 @@ var config = {
   onSnapEnd: onSnapEnd,
 };
 
-// create chess board widget instance
 board = Chessboard("chess_board", config);
 
 updateColorButton();
 
-// update game status
 updateStatus();

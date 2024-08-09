@@ -81,6 +81,8 @@ function initSpeech() {
 
 function processVoiceMove(move) {
   // Convert the move to lowercase and remove extra spaces
+  console.log(move);
+
   move = move.toLowerCase().trim().replace(/\s+/g, " ").split(" ").join("");
 
   if (
@@ -157,6 +159,10 @@ function convertEngineMoveToNaturalLanguage(move) {
     text += " en passant";
   } else if (move.flags.includes("p")) {
     text += " promoting to " + letterToPiece[move.promotion];
+  } else if (move.san.includes("#")) {
+    text += " checkmate";
+  } else if (move.san.includes("+")) {
+    text += " check";
   }
 
   return text;

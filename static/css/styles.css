@@ -64,7 +64,7 @@ body {
 #evaluation-bar-container {
   height: 595px;
   width: 25px;
-  background-color: #e9ecef;
+  background-color: #888;
   border: 1px solid #ced4da;
   border-radius: 5px;
   overflow: hidden;
