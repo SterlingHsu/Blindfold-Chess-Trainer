@@ -1,6 +1,6 @@
 html,
 body {
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -86,6 +86,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.piece-417db {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.pieces-hidden .piece-417db {
+  opacity: 0;
 }
 
 #evaluation-bar-container {
