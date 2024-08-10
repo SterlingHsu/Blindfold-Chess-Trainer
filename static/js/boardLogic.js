@@ -56,7 +56,7 @@ function updateEvaluationBar(score) {
     score.includes("-")
       ? $evaluationBar.css("height", "0%")
       : $evaluationBar.css("height", "100%");
-    $score.text("M" + parseInt(score).toFixed(0));
+    $score.text("M" + parseInt(score).replace("-", "").toFixed(0));
     $evaluationBar.css("background-color", "#FFFFFF");
   } else {
     let numericScore = parseInt(score) / 100; // Convert centipawns to pawns
