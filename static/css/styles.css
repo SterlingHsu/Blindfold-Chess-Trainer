@@ -43,7 +43,6 @@ body {
 
 .side-panel {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
   align-items: flex-start;
@@ -101,7 +100,7 @@ body {
 
 #evaluation-bar {
   width: 100%;
-  background-color: #4caf50;
+  background-color: #888;
   position: absolute;
   bottom: 0;
   transition: height 0.3s;
@@ -180,63 +179,13 @@ body {
 }
 
 @media (max-width: 650px) {
-  .side-panel {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #evaluation-container {
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  #evaluation-bar-container {
-    height: 25px;
-    width: calc(100% - 50px);
-    max-width: 300px;
-  }
-
-  #evaluation-bar {
-    height: 100%;
-    width: 50%;
-    left: 50%;
-    bottom: auto;
-    top: 0;
-    transition: width 0.3s, left 0.3s;
-  }
-}
-
-@media (max-width: 650px) {
   .container-fluid {
     align-items: flex-start;
   }
 
   .side-panel {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #evaluation-container {
-    width: 100%;
+    margin-top: 5px;
     flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  #evaluation-bar-container {
-    height: 25px;
-    width: calc(100% - 50px);
-    max-width: 300px;
-  }
-
-  #evaluation-bar {
-    height: 100%;
-    width: 50%;
-    left: 50%;
-    bottom: auto;
-    top: 0;
-    transition: width 0.3s, left 0.3s;
+    align-items: center;
   }
 }

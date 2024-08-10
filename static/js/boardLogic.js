@@ -9,6 +9,9 @@ var $time = $("#time");
 var $nodes = $("#nodes");
 var $knps = $("#knps");
 var piecesHidden = false;
+// Variable to track whether a mobile user is dragging a piece
+// Used to prevent the screen from being moved while dragging
+var isDragging = false;
 
 function make_move() {
   if (game.turn() === userColor) return;
@@ -192,6 +195,11 @@ function onDragStart(source, piece, position, orientation) {
   ) {
     return false;
   }
+
+  isDragging = true;
+  document.body.style.touchAction = "none";
+
+  return true;
 }
 
 // on dropping piece
@@ -205,6 +213,9 @@ function onDrop(source, target) {
 
   // illegal move
   if (move === null) return "snapback";
+
+  isDragging = false;
+  document.body.style.touchAction = "";
 
   speak("You moved " + convertEngineMoveToNaturalLanguage(move));
 
@@ -221,6 +232,8 @@ function onDrop(source, target) {
 // for castling, en passant, pawn promotion
 function onSnapEnd() {
   board.position(game.fen());
+  isDragging = false;
+  document.body.style.touchAction = "";
 }
 
 function handleUserMove(move) {
@@ -273,6 +286,17 @@ function updateStatus() {
   $fen.val(game.fen());
   $pgn.html(game.pgn());
 }
+
+// Prevent mobile screen from moving when dragging a piece 
+document.addEventListener(
+  "touchmove",
+  function (e) {
+    if (isDragging) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);
 
 // chess board configuration
 var config = {

@@ -20,6 +20,7 @@ const pieceToLetter = {
   king: "K",
 
   // Handling common WebSpeech misinterpretations
+  of: "f",
   night: "N",
   see: "c",
   sea: "c",
@@ -81,8 +82,6 @@ function initSpeech() {
 
 function processVoiceMove(move) {
   // Convert the move to lowercase and remove extra spaces
-  console.log(move);
-
   move = move.toLowerCase().trim().replace(/\s+/g, " ").split(" ").join("");
 
   if (
