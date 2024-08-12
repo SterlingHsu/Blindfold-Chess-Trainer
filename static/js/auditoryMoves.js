@@ -20,6 +20,8 @@ const pieceToLetter = {
   king: "K",
 
   // Handling common WebSpeech misinterpretations
+  92: "Nd2",
+  he: "e",
   of: "f",
   night: "N",
   see: "c",
@@ -82,18 +84,19 @@ function initSpeech() {
 
 function processVoiceMove(move) {
   // Convert the move to lowercase and remove extra spaces
+  console.log(move)
   move = move.toLowerCase().trim().replace(/\s+/g, " ").split(" ").join("");
 
   if (
-    move === "castle kingside" ||
-    move === "kingside castle" ||
-    move === "short castle"
+    move === "castlekingside" ||
+    move === "kingsidecastle" ||
+    move === "shortcastle"
   ) {
     move = "O-O";
   } else if (
-    move === "castle queenside" ||
-    move === "queenside castle" ||
-    move === "long castle"
+    move === "castlequeenside" ||
+    move === "queensidecastle" ||
+    move === "longcastle"
   ) {
     move = "O-O-O";
   }
@@ -116,9 +119,6 @@ function processVoiceMove(move) {
   if (!/[NBRQK]/.test(move[0]) && move[0] !== "O") {
     move = move.split(" ").slice(-2).join("");
   }
-
-  // Remove spaces
-  move = move.replace(/\s/g, "");
 
   let result = game.move(move, { sloppy: true });
 

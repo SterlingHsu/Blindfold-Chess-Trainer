@@ -1,17 +1,16 @@
 // GUI board & game state variables
-var board = null;
-var game = new Chess();
-var $status = $("#status");
-var $fen = $("#fen");
-var $pgn = $("#pgn");
-var $score = $("#score");
-var $time = $("#time");
-var $nodes = $("#nodes");
-var $knps = $("#knps");
-var piecesHidden = false;
-// Variable to track whether a mobile user is dragging a piece
-// Used to prevent the screen from being moved while dragging
-var isDragging = false;
+let board = null;
+let game = new Chess();
+let $status = $("#status");
+let $fen = $("#fen");
+let $pgn = $("#pgn");
+let $score = $("#score");
+let scoreStack = [];
+let $time = $("#time");
+let $nodes = $("#nodes");
+let $knps = $("#knps");
+let piecesHidden = false;
+let isDragging = false;
 
 function make_move() {
   if (game.turn() === userColor) return;
@@ -39,11 +38,10 @@ function make_move() {
   );
 }
 
-let scoreStack = [];
-
 const evaluationBarContainer = document.getElementById(
   "evaluation-bar-container"
 );
+
 for (let i = 1; i < 10; i++) {
   const tick = document.createElement("div");
   tick.className = "evaluation-tick";
@@ -59,7 +57,7 @@ function updateEvaluationBar(score) {
     score.includes("-")
       ? $evaluationBar.css("height", "0%")
       : $evaluationBar.css("height", "100%");
-    $score.text("M" + parseInt(score).replace("-", "").toFixed(0));
+    $score.text(score.replace("-", ""));
     $evaluationBar.css("background-color", "#FFFFFF");
   } else {
     let numericScore = parseInt(score) / 100; // Convert centipawns to pawns
@@ -171,20 +169,28 @@ $("#difficulty").on("input", function () {
 });
 
 $("#user-move").keypress(function (e) {
+  // "Enter" key
   if (e.which == 13) {
-    // Enter key pressed
-    var move = $(this).val();
+    let move = $(this).val();
     if (handleUserMove(move)) {
-      $(this).val(""); // Clear the input field
+      $(this).val("");
     } else {
       alert("Invalid move. Please try again.");
     }
   }
 });
 
-// on picking up a piece
+function enableMobileDragging(allow) {
+  if (allow) {
+    isDragging = false;
+    document.body.style.touchAction = "";
+  } else {
+    isDragging = true;
+    document.body.style.touchAction = "none";
+  }
+}
+
 function onDragStart(source, piece, position, orientation) {
-  // do not pick up pieces if the game is over
   if (game.game_over()) return false;
 
   // only pick up pieces for the side to move
@@ -196,8 +202,7 @@ function onDragStart(source, piece, position, orientation) {
     return false;
   }
 
-  isDragging = true;
-  document.body.style.touchAction = "none";
+  enableMobileDragging(false);
 
   return true;
 }
@@ -205,17 +210,19 @@ function onDragStart(source, piece, position, orientation) {
 // on dropping piece
 function onDrop(source, target) {
   // see if the move is legal
-  var move = game.move({
+  let move = game.move({
     from: source,
     to: target,
     promotion: "q", // NOTE: always promote to a queen for example simplicity
   });
 
   // illegal move
-  if (move === null) return "snapback";
+  if (move === null) {
+    enableMobileDragging(true);
+    return "snapback";
+  }
 
-  isDragging = false;
-  document.body.style.touchAction = "";
+  enableMobileDragging(true);
 
   speak("You moved " + convertEngineMoveToNaturalLanguage(move));
 
@@ -232,14 +239,13 @@ function onDrop(source, target) {
 // for castling, en passant, pawn promotion
 function onSnapEnd() {
   board.position(game.fen());
-  isDragging = false;
-  document.body.style.touchAction = "";
+  enableMobileDragging(true);
 }
 
 function handleUserMove(move) {
   if (game.turn() !== userColor) return false;
 
-  var result_of_move = game.move(move, { sloppy: true });
+  let result_of_move = game.move(move, { sloppy: true });
 
   if (result_of_move == null) return false;
 
@@ -254,9 +260,9 @@ function handleUserMove(move) {
 
 // update game status
 function updateStatus() {
-  var status = "";
+  let status = "";
 
-  var moveColor = "White";
+  let moveColor = "White";
   if (game.turn() === "b") {
     moveColor = "Black";
   }
@@ -287,7 +293,7 @@ function updateStatus() {
   $pgn.html(game.pgn());
 }
 
-// Prevent mobile screen from moving when dragging a piece 
+// Prevent mobile screen from moving when dragging a piece
 document.addEventListener(
   "touchmove",
   function (e) {
@@ -299,7 +305,7 @@ document.addEventListener(
 );
 
 // chess board configuration
-var config = {
+let config = {
   draggable: true,
   position: "start",
   onDragStart: onDragStart,
