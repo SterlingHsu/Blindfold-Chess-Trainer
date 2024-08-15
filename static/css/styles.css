@@ -1,6 +1,6 @@
 html,
 body {
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -16,43 +16,45 @@ body {
 }
 
 .container-fluid {
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
 }
 
 .chess-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 30px;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
 
 .board-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .side-panel {
   display: flex;
   gap: 20px;
-  justify-content: flex-start;
-  align-items: flex-start;
-  max-width: 600px;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
 }
 
 #evaluation-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .controls-container {
@@ -97,7 +99,7 @@ body {
 }
 
 #evaluation-bar-container {
-  height: 595px;
+  height: 495px;
   width: 25px;
   background-color: #888;
   border: 1px solid #ced4da;
@@ -178,6 +180,7 @@ body {
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    max-width: 100%;
   }
 
   .controls-container {
@@ -186,14 +189,45 @@ body {
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 768px) {
   .container-fluid {
-    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .chess-container {
+    gap: 20px;
+  }
+
+  .board-container,
+  .side-panel {
+    max-width: 100%;
   }
 
   .side-panel {
-    margin-top: 5px;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+  }
+
+  #evaluation-bar-container {
+    height: 300px;
+  }
+
+  #evaluation-container {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #evaluation-bar-container {
+    height: 25px;
+    width: 300px;
+  }
+
+  #evaluation-bar {
+    height: 100%;
+    width: 50%;
+    left: 0;
+    transition: width 0.3s;
   }
 }
