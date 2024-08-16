@@ -6,9 +6,6 @@ let $fen = $("#fen");
 let $pgn = $("#pgn");
 let $score = $("#score");
 let scoreStack = [];
-let $time = $("#time");
-let $nodes = $("#nodes");
-let $knps = $("#knps");
 let piecesHidden = false;
 let isDragging = false;
 
@@ -168,9 +165,9 @@ $("#difficulty").on("input", function () {
   $("#difficulty-value").text($(this).val());
 });
 
-$("#user-move").keypress(function (e) {
+$("#user-move").on("keyup", function (e) {
   // "Enter" key
-  if (e.which == 13) {
+  if (e.key === "Enter" || e.keyCode === 13) {
     let move = $(this).val();
     if (handleUserMove(move)) {
       $(this).val("");
