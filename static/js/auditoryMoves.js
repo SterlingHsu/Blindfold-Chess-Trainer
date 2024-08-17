@@ -87,6 +87,11 @@ function processVoiceMove(move) {
   console.log(move)
   move = move.toLowerCase().trim().replace(/\s+/g, " ").split(" ").join("");
 
+  if (move === "takeback") {
+    undoMove();
+    return;
+  }
+
   if (
     move === "castlekingside" ||
     move === "kingsidecastle" ||
