@@ -124,7 +124,7 @@ body {
   background-color: #adb5bd;
 }
 
-#score {
+#evaluation {
   margin-top: 5px;
   font-size: 14px;
   color: #333;
@@ -215,7 +215,7 @@ body {
     display: none;
   }
 
-  #score {
+  #evaluation {
     margin: 0px 0 0 0;
     padding: 0px;
     font-size: 14px;

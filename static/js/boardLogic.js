@@ -2,11 +2,9 @@
 let board = null;
 let game = new Chess();
 let userColor = "w";
-let $status = $("#status");
-let $fen = $("#fen");
 let $pgn = $("#pgn");
-let $score = $("#score");
-let scoreStack = [];
+let $evaluation = $("#evaluation");
+let evaluationStack = [];
 let piecesHidden = false;
 let isDragging = false;
 
@@ -23,7 +21,7 @@ function make_move() {
 
       board.position(game.fen());
 
-      updateEvaluationBar(data.score);
+      updateEvaluationBar(data.evaluation);
 
       updateStatus();
 
@@ -47,22 +45,22 @@ for (let i = 1; i < 10; i++) {
   evaluationBarContainer.appendChild(tick);
 }
 
-function updateEvaluationBar(score) {
+function updateEvaluationBar(evaluation) {
   const $evaluationBar = $("#evaluation-bar");
-  const $score = $("#score");
+  const $evaluation = $("#evaluation");
 
-  if (score.includes("M")) {
-    score.includes("-")
+  if (evaluation.includes("M")) {
+    evaluation.includes("-")
       ? $evaluationBar.css("height", "0%")
       : $evaluationBar.css("height", "100%");
-    $score.text(score.replace("-", ""));
+    $evaluation.text(evaluation.replace("-", ""));
     $evaluationBar.css("background-color", "#FFFFFF");
   } else {
-    let numericScore = parseInt(score) / 100; // Convert centipawns to pawns
+    let numericEvaluation = parseInt(evaluation) / 100; // Convert centipawns to pawns
 
-    scoreStack.push(numericScore);
+    evaluationStack.push(numericEvaluation);
 
-    let heightPercentage = 50 + (numericScore / 10) * 50;
+    let heightPercentage = 50 + (numericEvaluation / 10) * 50;
 
     heightPercentage = Math.min(100, Math.max(0, heightPercentage));
 
@@ -70,15 +68,15 @@ function updateEvaluationBar(score) {
 
     $evaluationBar.css("background-color", "#FFFFFF");
 
-    $score.text((numericScore > 0 ? "+" : "") + numericScore.toFixed(2));
+    $evaluation.text((numericEvaluation > 0 ? "+" : "") + numericEvaluation.toFixed(2));
   }
 }
 
-function updateEvaluationBarFromStack(score) {
+function updateEvaluationBarFromStack(evaluation) {
   const $evaluationBar = $("#evaluation-bar");
-  const $score = $("#score");
+  const $evaluation = $("#evaluation");
 
-  let heightPercentage = 50 + (score / 10) * 50;
+  let heightPercentage = 50 + (evaluation / 10) * 50;
 
   heightPercentage = Math.min(100, Math.max(0, heightPercentage));
 
@@ -86,16 +84,16 @@ function updateEvaluationBarFromStack(score) {
 
   $evaluationBar.css("background-color", "#FFFFFF"); // Grey for equal
 
-  $score.text((score > 0 ? "+" : "") + score.toFixed(2));
+  $evaluation.text((evaluation > 0 ? "+" : "") + evaluation.toFixed(2));
 }
 
 function resetEvaluationBar() {
   const $evaluationBar = $("#evaluation-bar");
-  const $score = $("#score");
+  const $evaluation = $("#evaluation");
 
   $evaluationBar.css("height", "50%");
   $evaluationBar.css("background-color", "#FFFFFF");
-  $score.text("0.00");
+  $evaluation.text("0.00");
 }
 
 function resetGame() {
@@ -106,7 +104,7 @@ function resetGame() {
     make_move();
   }
   updateStatus();
-  scoreStack = [];
+  evaluationStack = [];
   resetEvaluationBar();
 }
 
@@ -218,8 +216,6 @@ function updateStatus() {
   }
 
   // update DOM elements
-  $status.html(status);
-  $fen.val(game.fen());
   $pgn.html(game.pgn());
 }
 
@@ -244,7 +240,5 @@ let config = {
 };
 
 board = Chessboard("chess_board", config);
-
-updateColorButton();
 
 updateStatus();

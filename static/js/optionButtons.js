@@ -20,11 +20,11 @@ function undoMove() {
 
   board.position(game.fen());
 
-  scoreStack.pop();
-  let previousScore = scoreStack.pop();
+  evaluationStack.pop();
+  let previousEvaluation = evaluationStack.pop();
 
-  if (previousScore !== undefined) {
-    updateEvaluationBarFromStack(previousScore);
+  if (previousEvaluation !== undefined) {
+    updateEvaluationBarFromStack(previousEvaluation);
   } else {
     resetEvaluationBar();
   }
