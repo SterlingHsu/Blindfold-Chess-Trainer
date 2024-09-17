@@ -182,6 +182,7 @@ body {
     gap: 20px;
     height: 100%;
     flex-direction: column;
+    justify-content: flex-start;
   }
 
   .board-container,
